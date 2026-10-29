@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Afzaal Enterprise Hosting Mobile</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brandDark: '#0b0f19',
+                        brandCard: 'rgba(17, 24, 39, 0.85)',
+                        brandBorder: 'rgba(255, 255, 255, 0.1)'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glass-panel {
+            background: rgba(17, 24, 39, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+        .neon-glow {
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.15);
+        }
+        body {
+            -webkit-tap-highlight-color: transparent;
+        }
+    </style>
+</head>
+<body class="bg-brandDark text-slate-100 font-sans min-h-screen overflow-x-hidden pb-12">
+
+    <!-- Mobile Header -->
+    <header class="sticky top-0 z-40 glass-panel border-b border-brandBorder px-4 py-3 flex justify-between items-center">
+        <div class="flex items-center gap-2.5">
+            <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-blue-600 to-indigo-500 flex items-center justify-center font-bold text-sm shadow-md shadow-blue-500/30">A</div>
+            <div>
+                <h1 class="text-sm font-extrabold tracking-wider bg-gradient-to-r from-blue-400 to-indigo-300 bg-clip-text text-transparent">AFZAAL HOSTING</h1>
+                <p class="text-[10px] text-slate-400">Mobile Edition</p>
+            </div>
+        </div>
+
+        <div class="flex items-center gap-3">
+            <span class="text-xs font-semibold text-blue-400 hidden xs:inline">Afzaal</span>
+            <!-- 3 Lines Menu Button -->
+            <button onclick="toggleSidebar()" class="p-2 rounded-lg glass-panel hover:bg-slate-800 transition text-slate-300 focus:outline-none">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+        </div>
+    </header>
+
+    <!-- Sidebar Drawer (Mobile Friendly) -->
+    <div id="sidebar-backdrop" onclick="toggleSidebar()" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden transition-opacity opacity-0"></div>
+    <aside id="sidebar-drawer" class="fixed top-0 right-0 w-72 h-full glass-panel z-50 transform translate-x-full transition-transform duration-300 ease-in-out border-l border-brandBorder p-5 flex flex-col justify-between">
+        <div>
+            <div class="flex justify-between items-center mb-6 border-b border-brandBorder pb-3">
+                <h2 class="text-base font-bold text-slate-200 flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></span> Quick Links
+                </h2>
+                <button onclick="toggleSidebar()" class="text-slate-400 hover:text-white p-1">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+
+            <div class="space-y-3">
+                <a href="https://whatsapp.com/channel/0029VbDRJh789ine9bjCVF3m" target="_blank" class="block p-3 rounded-xl bg-slate-800/50 hover:bg-blue-600/20 border border-brandBorder transition">
+                    <div class="text-[10px] text-blue-400 font-bold uppercase mb-0.5">🔗 FRIEND CHANNEL</div>
+                    <div class="text-xs font-medium text-slate-200">WhatsApp Channel</div>
+                </a>
+                <a href="https://wa.me/923005393425" target="_blank" class="block p-3 rounded-xl bg-slate-800/50 hover:bg-emerald-600/20 border border-brandBorder transition">
+                    <div class="text-[10px] text-emerald-400 font-bold uppercase mb-0.5">💬 DEV CONTACT</div>
+                    <div class="text-xs font-medium text-slate-200">+92 300 5393425</div>
+                </a>
+                <a href="https://t.me/Hassan_1M_FF" target="_blank" class="block p-3 rounded-xl bg-slate-800/50 hover:bg-cyan-600/20 border border-brandBorder transition">
+                    <div class="text-[10px] text-cyan-400 font-bold uppercase mb-0.5">✈️ FRIEND TG ACC</div>
+                    <div class="text-xs font-medium text-slate-200">@Hassan_1M_FF</div>
+                </a>
+            </div>
+        </div>
+        <div class="border-t border-brandBorder pt-3 text-center">
+            <p class="text-[10px] text-slate-500">Afzaal Mobile Host v4.0</p>
+        </div>
+    </aside>
+
+    <!-- Main Content Container (Mobile Optimized) -->
+    <main class="max-w-md mx-auto p-4 space-y-4">
+
+        <!-- Status Cards (Compact Grid for Mobile) -->
+        <div class="grid grid-cols-2 gap-3">
+            <div class="glass-panel p-3.5 rounded-xl">
+                <p class="text-[11px] text-slate-400">Server Health</p>
+                <h3 class="text-sm font-bold text-emerald-400 mt-0.5">100% Online</h3>
+            </div>
+            <div class="glass-panel p-3.5 rounded-xl">
+                <p class="text-[11px] text-slate-400">Active Deploys</p>
+                <h3 id="deploy-count" class="text-sm font-bold text-blue-400 mt-0.5">0</h3>
+            </div>
+        </div>
+
+        <!-- Deployment Workspace Card -->
+        <div class="glass-panel p-4 rounded-xl neon-glow space-y-3">
+            <div class="flex flex-col gap-2">
+                <div>
+                    <h2 class="text-sm font-bold text-slate-200">Deployment Workspace</h2>
+                    <p class="text-[11px] text-slate-400">Create files or drop project archives</p>
+                </div>
+                <button onclick="openEditorModal()" class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-2.5 rounded-xl text-xs font-bold shadow-md flex items-center justify-center gap-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                    Create New File
+                </button>
+            </div>
+
+            <!-- Drag & Drop Zone (Mobile friendly tap/upload) -->
+            <div id="drop-zone" class="border border-dashed border-blue-500/40 rounded-xl p-4 text-center bg-blue-500/5">
+                <p class="text-xs font-medium text-slate-300">Tap or Drop files to host</p>
+                <p class="text-[10px] text-slate-500 mt-0.5">HTML, PHP, CSS, JS</p>
+            </div>
+        </div>
+
+        <!-- MY HOSTING'S SECTION -->
+        <div class="glass-panel p-4 rounded-xl space-y-3">
+            <div class="flex justify-between items-center">
+                <h2 class="text-sm font-bold text-slate-200">MY HOSTING'S</h2>
+                <span class="text-[10px] bg-blue-500/20 text-blue-400 px-2 py-0.5 rounded-full border border-blue-500/30">Personal</span>
+            </div>
+            <div id="my-hostings-list" class="space-y-2">
+                <p id="empty-my-hostings" class="text-xs text-slate-500 italic py-1">No personal hostings yet.</p>
+            </div>
+        </div>
+
+        <!-- GLOBAL HOST SECTION -->
+        <div class="glass-panel p-4 rounded-xl space-y-3">
+            <div class="flex justify-between items-center">
+                <h2 class="text-sm font-bold text-slate-200">GLOBAL HOST</h2>
+                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
+            </div>
+            <div id="global-host-list" class="space-y-2">
+                <p id="empty-global-host" class="text-xs text-slate-500 italic py-1">Global host network list is clear.</p>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- CREATE NEW FILE MODAL (Mobile Optimized) -->
+    <div id="editor-modal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
+        <div class="glass-panel w-full sm:max-w-lg rounded-t-2xl sm:rounded-2xl border-t sm:border border-brandBorder p-5 space-y-3 max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center border-b border-brandBorder pb-2">
+                <h3 class="text-sm font-bold text-slate-200 flex items-center gap-1.5">
+                    <svg class="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+                    Create & Host File
+                </h3>
+                <button onclick="closeEditorModal()" class="text-slate-400 hover:text-white p-1">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+
+            <!-- Modal Inputs -->
+            <div class="space-y-2.5">
+                <div>
+                    <label class="block text-[10px] font-bold text-slate-300 uppercase mb-1">File Name</label>
+                    <input type="text" id="file-name-input" placeholder="e.g. index.html" class="w-full bg-slate-900 border border-brandBorder rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-blue-500">
+                </div>
+
+                <div>
+                    <div class="flex justify-between items-center mb-1">
+                        <label class="block text-[10px] font-bold text-slate-300 uppercase">Source Code</label>
+                        <div class="flex gap-1.5">
+                            <button onclick="pasteNewCode()" class="text-[10px] bg-blue-600/20 text-blue-400 px-2 py-0.5 rounded border border-blue-500/30">Paste</button>
+                            <button onclick="deleteOldCode()" class="text-[10px] bg-rose-600/20 text-rose-400 px-2 py-0.5 rounded border border-rose-500/30">Clear</button>
+                        </div>
+                    </div>
+                    <textarea id="code-editor" rows="5" placeholder="Paste code here..." class="w-full bg-slate-950 font-mono text-[11px] text-emerald-400 border border-brandBorder rounded-xl p-3 focus:outline-none focus:border-blue-500 leading-tight"></textarea>
+                </div>
+
+                <div class="grid grid-cols-1 gap-2.5 pt-1">
+                    <div>
+                        <label class="block text-[10px] font-bold text-slate-300 uppercase mb-1">Security Password (Optional)</label>
+                        <input type="password" id="file-password" placeholder="Set password" class="w-full bg-slate-900 border border-brandBorder rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-bold text-slate-300 uppercase mb-1">Get Password Link (Optional)</label>
+                        <input type="url" id="get-password-link" placeholder="https://..." class="w-full bg-slate-900 border border-brandBorder rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-blue-500">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Deploy Button & Progress -->
+            <div id="deploy-action-box" class="pt-2 border-t border-brandBorder">
+                <button id="deploy-btn" onclick="startDeploymentProcess()" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold text-xs shadow-md">
+                    🚀 Deploy File Now
+                </button>
+
+                <div id="progress-container" class="hidden space-y-1.5">
+                    <div class="flex justify-between items-center text-[11px]">
+                        <span class="text-blue-400 font-semibold animate-pulse">Deploying...</span>
+                        <span id="countdown-text" class="text-slate-200 font-bold">40s</span>
+                    </div>
+                    <div class="w-full bg-slate-900 h-2.5 rounded-full overflow-hidden border border-brandBorder">
+                        <div id="progress-bar" class="bg-gradient-to-r from-blue-500 to-indigo-500 h-full w-0 transition-all duration-1000 ease-linear"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script Engine -->
+    <script>
+        function toggleSidebar() {
+            const drawer = document.getElementById('sidebar-drawer');
+            const backdrop = document.getElementById('sidebar-backdrop');
+            if (drawer.classList.contains('translate-x-full')) {
+                drawer.classList.remove('translate-x-full');
+                backdrop.classList.remove('hidden');
+                setTimeout(() => backdrop.classList.remove('opacity-0'), 10);
+            } else {
+                drawer.classList.add('translate-x-full');
+                backdrop.classList.add('opacity-0');
+                setTimeout(() => backdrop.classList.add('hidden'), 300);
+            }
+        }
+
+        function openEditorModal() { document.getElementById('editor-modal').classList.remove('hidden'); }
+        function closeEditorModal() { document.getElementById('editor-modal').classList.add('hidden'); resetModalForm(); }
+
+        function deleteOldCode() { document.getElementById('code-editor').value = ''; }
+        async function pasteNewCode() {
+            try {
+                const text = await navigator.clipboard.readText();
+                document.getElementById('code-editor').value = text;
+            } catch (err) { alert("Paste manually in the box."); }
+        }
+
+        function resetModalForm() {
+            document.getElementById('file-name-input').value = '';
+            document.getElementById('code-editor').value = '';
+            document.getElementById('file-password').value = '';
+            document.getElementById('get-password-link').value = '';
+            document.getElementById('progress-container').classList.add('hidden');
+            document.getElementById('deploy-btn').classList.remove('hidden');
+            document.getElementById('progress-bar').style.width = '0%';
+        }
+
+        let hostedCount = 0;
+
+        function startDeploymentProcess() {
+            const fileName = document.getElementById('file-name-input').value.trim();
+            if (!fileName) { alert("Please enter a file name!"); return; }
+
+            document.getElementById('deploy-btn').classList.add('hidden');
+            document.getElementById('progress-container').classList.remove('hidden');
+
+            let timeLeft = 40;
+            const progressBar = document.getElementById('progress-bar');
+            const countdownText = document.getElementById('countdown-text');
+
+            const interval = setInterval(() => {
+                timeLeft--;
+                countdownText.innerText = timeLeft + "s";
+                progressBar.style.width = (((40 - timeLeft) / 40) * 100) + "%";
+
+                if (timeLeft <= 0) {
+                    clearInterval(interval);
+                    completeDeployment(fileName, document.getElementById('file-password').value.trim(), document.getElementById('get-password-link').value.trim());
+                }
+            }, 1000);
+        }
+
+        function completeDeployment(fileName, password, getPassLink) {
+            hostedCount++;
+            document.getElementById('deploy-count').innerText = hostedCount;
+
+            const emptyMy = document.getElementById('empty-my-hostings');
+            if (emptyMy) emptyMy.remove();
+            const emptyGlobal = document.getElementById('empty-global-host');
+            if (emptyGlobal) emptyGlobal.remove();
+
+            let secBadge = password ? `<span class="text-[9px] bg-amber-500/20 text-amber-400 border border-amber-500/30 px-1.5 py-0.5 rounded font-semibold">Protected</span>` : `<span class="text-[9px] bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 px-1.5 py-0.5 rounded font-semibold">Public</span>`;
+            let getPassBtn = getPassLink ? `<a href="${getPassLink}" target="_blank" class="text-[11px] text-blue-400 underline block mt-0.5">🔑 Get Password</a>` : '';
+
+            document.getElementById('my-hostings-list').innerHTML = `
+                <div class="p-3 rounded-xl bg-slate-800/40 border border-brandBorder flex justify-between items-center">
+                    <div>
+                        <div class="flex items-center gap-1.5">
+                            <p class="font-semibold text-xs text-slate-200">${fileName}</p>
+                            ${secBadge}
+                        </div>
+                        <span class="text-[10px] text-slate-400">Afzaal • Just now</span>
+                        ${getPassBtn}
+                    </div>
+                    <button onclick="accessFile('${password}')" class="text-[10px] bg-blue-600 text-white px-2.5 py-1 rounded-lg font-medium">Open</button>
+                </div>
+            ` + document.getElementById('my-hostings-list').innerHTML;
+
+            document.getElementById('global-host-list').innerHTML = `
+                <div class="p-3 rounded-xl bg-slate-800/40 border border-brandBorder">
+                    <div class="flex justify-between items-start mb-0.5">
+                        <p class="font-semibold text-xs text-slate-200">${fileName}</p>
+                        ${secBadge}
+                    </div>
+                    <p class="text-[10px] text-slate-400">Owner: Afzaal</p>
+                    <p class="text-[9px] text-emerald-400 mt-0.5">● Live</p>
+                </div>
+            ` + document.getElementById('global-host-list').innerHTML;
+
+            closeEditorModal();
+            alert("File '" + fileName + "' successfully hosted!");
+        }
+
+        function accessFile(password) {
+            if (password) {
+                let userPass = prompt("Enter file password:");
+                if (userPass === password) alert("Access granted!");
+                else alert("Incorrect password!");
+            } else {
+                alert("Opening file...");
+            }
+        }
+    </script>
+</body>
+</html>
